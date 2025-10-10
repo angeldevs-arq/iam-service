@@ -1,0 +1,57 @@
+server:
+  port: 8081
+
+spring:
+  application:
+    name: iam-service
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/eventify
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: com.angeldevs.iam_service.shared.infrastructure.persistence.jpa.configuration.strategy.SnakeCaseWithPluralizedTablePhysicalNamingStrategy
+    open-in-view: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        
+  # Spring Boot Admin Client Configuration
+  boot:
+    admin:
+      client:
+        url: http://localhost:9090
+
+documentation:
+  application:
+    description: "@project.description@"
+    version: "@project.version@"
+
+authorization:
+  jwt:
+    secret: 14db3b405fd39d8a7434ea25d19e80eba402da04a4807ffa95114e92a140dd1c
+    expiration:
+      days: 7
+
+# Eureka Client Configuration
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      show-details: always

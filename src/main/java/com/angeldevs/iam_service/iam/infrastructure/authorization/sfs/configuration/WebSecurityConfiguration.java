@@ -91,9 +91,9 @@ public class WebSecurityConfiguration {
                                 "/webjars/**",
                                 "/actuator/**")
                         .permitAll()
-                        .anyRequest().authenticated());
+                        .anyRequest().permitAll());
         http.authenticationProvider(authenticationProvider());
-        http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        //http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

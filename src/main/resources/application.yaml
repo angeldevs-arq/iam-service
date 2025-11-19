@@ -6,9 +6,9 @@ spring:
     name: iam-service
 
   datasource:
-    url: jdbc:mysql://localhost:3306/eventify
-    username: root
-    password: root
+    url: ${DB_URL:jdbc:mysql://localhost:3306/iam?createDatabaseIfNotExist=true}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:root}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -26,7 +26,10 @@ spring:
   boot:
     admin:
       client:
-        url: http://localhost:9090
+        url: ${ADMIN_URL:http://localhost:9090}
+        instance:
+          service-base-url: ${SERVICE_URL:http://localhost:8081}
+
 
 documentation:
   application:
@@ -43,10 +46,13 @@ authorization:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_URL:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
-
+  instance:
+    hostname: ${EUREKA_HOST:localhost}
+    secure-port-enabled: true
+    
 management:
   endpoints:
     web:

@@ -51,6 +51,7 @@ eureka:
     fetch-registry: true
   instance:
     hostname: ${EUREKA_HOST:localhost}
+    non-secure-port-enabled: true
     secure-port-enabled: true
     
 management:

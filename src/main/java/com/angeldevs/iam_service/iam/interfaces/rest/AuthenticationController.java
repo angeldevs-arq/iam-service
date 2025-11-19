@@ -31,14 +31,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 public class AuthenticationController {
     private final UserCommandService userCommandService;
 
-    private final RestClient client;
-
-    @Value("${PROFILE_SERVICE_URL}")
-    private String profileServiceUrl;
-
     public AuthenticationController(UserCommandService userCommandService) {
         this.userCommandService = userCommandService;
-        client = RestClient.create();
     }
 
     @PostMapping("/sign-in")
@@ -59,40 +53,6 @@ public class AuthenticationController {
         if (user.isEmpty())
             return ResponseEntity.badRequest().build();
         var userResource = UserResourceFromEntityAssembler.toResourceFromEntity(user.get());
-
-        /*
-         * {
-         * "firstName": "string",
-         * "lastName": "string",
-         * "email": "string",
-         * "street": "string",
-         * "number": "string",
-         * "city": "string",
-         * "postalCode": "string",
-         * "country": "string",
-         * "type": "string"
-         * }
-         */
-
-        var profileBody = Map.of(
-                "firstName", signUpResource.profile().firstName(),
-                "lastName", signUpResource.profile().lastName(),
-                "email", signUpResource.username(),
-                "street", signUpResource.profile().street(),
-                "number", signUpResource.profile().number(),
-                "city", signUpResource.profile().city(),
-                "postalCode", signUpResource.profile().postalCode(),
-                "country", signUpResource.profile().country(),
-                "type", signUpResource.profile().type());
-
-        CompletableFuture.runAsync(() -> {
-            client.post()
-                    .uri(profileServiceUrl + "/api/v1/profiles")
-                    .body(profileBody)
-                    .retrieve()
-                    .toBodilessEntity();
-        });
-
         return new ResponseEntity<>(userResource, HttpStatus.CREATED);
     }
 }

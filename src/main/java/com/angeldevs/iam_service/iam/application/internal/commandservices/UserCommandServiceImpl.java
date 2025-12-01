@@ -35,14 +35,14 @@ public class UserCommandServiceImpl implements UserCommandService {
         if (userRepository.existsByUsername(command.username()))
             throw new RuntimeException("Username already exists");
 
-        var user = new User(command.username(), hashingService.encode(command.password()));
+        var user = new User(command.username(), hashingService.encode(command.password()), command.role());
         userRepository.save(user);
 
         //CrearPerfil asociado al usuario
         CreateProfileCommand externalCommand = new CreateProfileCommand("","",
         user.getUsername(),"","","","","",
                 "https://res.cloudinary.com/dtxv5wnbj/image/upload/v1762385933/default-profile_kxt5l2.jpg",
-                "default-profile_kxt5l2","NONE",user.getId());
+                "default-profile_kxt5l2",user.getRole().name(),user.getId());
 
         profileClient.createProfile(externalCommand);
 

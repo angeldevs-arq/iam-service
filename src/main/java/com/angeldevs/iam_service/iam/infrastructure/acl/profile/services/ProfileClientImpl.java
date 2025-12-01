@@ -9,7 +9,7 @@ import org.springframework.web.client.RestClient;
 
 @Service
 public class ProfileClientImpl implements ProfileClient {
-    @Value("${PROFILE_SERVICE_URL:http://localhost:8082/api/v1/profiles}")
+    @Value("${PROFILE_SERVICE_URL:http://localhost:8082}")
     private String profileServiceUrl;
 
     private final RestClient restClient;
@@ -25,7 +25,7 @@ public class ProfileClientImpl implements ProfileClient {
 
     @Override
     public void createProfile(CreateProfileCommand command) {
-        restClient.post().uri(profileServiceUrl).body(command).retrieve()
+        restClient.post().uri(profileServiceUrl + "/api/v1/profiles").body(command).retrieve()
                 .onStatus(status -> !status.is2xxSuccessful(),
                         (request, response) -> {
                             throw new RuntimeException("Error creating profile: " + response.getStatusCode());

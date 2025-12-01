@@ -75,6 +75,7 @@ public class WebSecurityConfiguration {
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(
                                 "/api/v1/iam/**",
+                                "/api/v1/users/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
@@ -84,7 +85,8 @@ public class WebSecurityConfiguration {
                         .permitAll()
                         .anyRequest().permitAll());
         http.authenticationProvider(authenticationProvider());
-        //http.addFilterBefore(authorizationRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        // http.addFilterBefore(authorizationRequestFilter(),
+        // UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }
